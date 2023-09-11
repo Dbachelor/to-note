@@ -12,6 +12,6 @@ class OrderController extends Controller
     public function checkOutAction(Request $request)
     {
         $items = Cart::where('user_id', $request->user()->id)->select('product_id')->get();
-        return new KafkaProducer('checkout', $request->items, $request->user()->id);
+        return new KafkaProducer('checkout', $items, $request->user()->id);
     }
 }

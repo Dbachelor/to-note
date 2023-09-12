@@ -9,16 +9,6 @@ use PhpParser\Node\Expr\BinaryOp\BooleanOr;
 
 class CartManager
 {
-    public function getUserCartItems($user_id) : array
-    {
-        $data = [];
-        $products = Cart::where('user_id', $user_id)->product();
-        foreach ($products as $product) {
-            $data[] = [$product->name, $product->price];
-        }
-        return $data;
-    }
-
     public static function addItemToCart(int $user_id, array $product_ids) : bool
     {
         $insertableData = [];
@@ -40,5 +30,10 @@ class CartManager
             return true;
         }
         return false;
+    }
+
+    public static function delete($user_id) : bool
+    {
+       return (bool) Cart::where('user_id', $user_id)->delete();
     }
 }

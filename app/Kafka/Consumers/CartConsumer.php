@@ -8,14 +8,14 @@ use Junges\Kafka\Facades\Kafka;
 
 class CartConsumer
 {
-    public function __invoke($topic='cart_items')
+    public function __construct($topic='cart_items')
     {
-        $consumer = Kafka::createConsumer()->subscribe($topic);
+        $consumer = Kafka::createConsumer([$topic])->subscribe($topic);
         $consumer->withHandler(function(KafkaConsumerMessage $message){
             if ('cart_items' == $message->getTopicName()){
                 $items = $message->getBody();
-                $user_id = $message->getKey();
-                CartManager::addItemToCart($user_id, $items);
+                $user_id = 1;//$message->getKey();
+                CartManager::addItemToCart($user_id, $items->data);
             }
         })->build()->consume();
     }

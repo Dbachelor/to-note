@@ -3,20 +3,30 @@
 namespace App\Kafka\Consumers;
 
 use App\Http\Managers\CartManager;
+use Illuminate\Support\Facades\Log;
 use Junges\Kafka\Contracts\KafkaConsumerMessage;
-use Junges\Kafka\Facades\Kafka;
+
 
 class CartConsumer
 {
-    public function __construct($topic='cart_items')
+    public function __construct($user_id=1)
     {
-        $consumer = Kafka::createConsumer([$topic])->subscribe($topic);
-        $consumer->withHandler(function(KafkaConsumerMessage $message){
+       $consumer = \Junges\Kafka\Facades\Kafka::createConsumer(['cart_items'])
+       ->subscribe('cart_items')
+        ->withConsumerGroupId('group')
+        ->withDlq('cart_items')
+        ->withMaxMessages(1)
+        ->withHandler(function(KafkaConsumerMessage $message){
             if ('cart_items' == $message->getTopicName()){
                 $items = $message->getBody();
-                $user_id = 1;//$message->getKey();
-                CartManager::addItemToCart($user_id, $items->data);
+                $user_id = $message->getKey();
+                Log::alert($items);
+                CartManager::addItemToCart((int)$user_id, $items['data']);
             }
-        })->build()->consume();
+        })->build(); 
+
+        $consumer->stopConsuming();
+        $consumer->consume();
+
     }
 }

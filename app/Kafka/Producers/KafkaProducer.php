@@ -8,11 +8,12 @@ use Junges\Kafka\Message\Message;
 class KafkaProducer
 {
 
-    public function __construct(string $topic, array $data, int $user_id)
+    public function __construct(string $topic, mixed $data, int $key)
     {
         $message = new Message(
+            headers: [],
             body: ['data' => $data],
-            key: (string)$user_id
+            key: $key
         );
         Kafka::publishOn($topic)->withMessage($message)->send();
     }

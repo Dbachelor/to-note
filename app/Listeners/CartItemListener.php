@@ -24,8 +24,8 @@ class CartItemListener
      */
     public function handle(CartItem $event): void
     {
-        Log::alert('This is some useful information.');
-        new CartConsumer($event->user_id);
+        $cartConsumer = new CartConsumer();
+        $cartConsumer($event->user_id);
     }
 
     public function subscribe(Dispatcher $events): void

@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\CheckOut;
+use App\Kafka\Consumers\CheckOutConsumer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -22,6 +23,7 @@ class CheckOutListener
     public function handle(CheckOut $event): void
     {
         //
-        new CheckOutListener();
+        $checkoutConsumer = new CheckOutConsumer();
+        $checkoutConsumer();
     }
 }

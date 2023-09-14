@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\CartItem;
+use App\Events\CheckOut;
 use App\Listeners\CartItemListener;
+use App\Listeners\CheckOutListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,9 +25,9 @@ class EventServiceProvider extends ServiceProvider
         CartItem::class => [
             CartItemListener::class
         ],
-        'App\Event\CartItem' => [
-            'App\Listeners\CartItemListener'
-          ]
+        CheckOut::class => [
+            CheckOutListener::class
+        ],
     ];
 
     /**

@@ -8,7 +8,7 @@ use Junges\Kafka\Message\Message;
 class KafkaProducer
 {
 
-    public function __construct(string $topic, mixed $data, int $key)
+    public function __invoke(string $topic, mixed $data, int $key)
     {
         $message = new Message(
             headers: [],

@@ -9,7 +9,7 @@ use Junges\Kafka\Contracts\KafkaConsumerMessage;
 
 class CartConsumer
 {
-    public function __construct($user_id=1)
+    public function __invoke($user_id=1)
     {
        $consumer = \Junges\Kafka\Facades\Kafka::createConsumer(['cart_items'])
        ->subscribe('cart_items')
